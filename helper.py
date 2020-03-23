@@ -145,6 +145,9 @@ class DataReader:
         new_valid_x = np.array(new_valid_x)
         new_valid_y = np.array(new_valid_y)
 
+        # Max input ~ 1.9/2.0, min == 0
+        #print(new_train_x.max(), new_train_x.min())
+        #print(new_valid_x.max(), new_valid_x.min())
         #print(new_valid_y.shape, new_train_y.shape, t_y[0].shape, v_y[0].shape)
 
         #print(new_train_x.shape, new_train_y.shape)
