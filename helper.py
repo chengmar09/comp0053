@@ -121,6 +121,35 @@ class DataReader:
 
         return (new_train_x, t_y), (new_valid_x, v_y)
 
+    def more_more_processing(self):
+        new_train_x = []
+        new_valid_x = []
+
+        new_train_y = []
+        new_valid_y = []
+        (t_x, t_y), (v_x, v_y) = self.more_processing()
+
+        for part_ix, part_iy in zip(t_x, t_y):   #<- ensure that x and y have the same length
+            for ix, iy in zip(part_ix, part_iy):
+                new_train_x.append(ix)
+                new_train_y.append(iy)
+    
+        for part_ix, part_iy in zip(v_x, v_y):  
+            for ix, iy in zip(part_ix, part_iy):
+                new_valid_x.append(ix)
+                new_valid_y.append(iy)
+
+        new_train_x = np.array(new_train_x)
+        new_train_y = np.array(new_train_y)
+
+        new_valid_x = np.array(new_valid_x)
+        new_valid_y = np.array(new_valid_y)
+
+        #print(new_valid_y.shape, new_train_y.shape, t_y[0].shape, v_y[0].shape)
+
+        #print(new_train_x.shape, new_train_y.shape)
+        #print(new_valid_x.shape, new_valid_y.shape)
+        return (new_train_x, new_train_y), (new_valid_x, new_valid_y)
     '''
     Download the data and unzip... If you don't have the data
     '''
@@ -200,82 +229,6 @@ class DataReader:
             with ZipFile(validPath, 'r') as zipObj:
                 zipObj.extractall(pathtodata)   
 
-'''
-def downloadandunzip(data='Movementdata'):
-    
-    pathtodata = os.path.join('data', data)
-
-    # Check if Data Folder exist
-    if os.path.exists(pathtodata):
-        print('Folder exists')
-        
-        # Check if train data exists
-        trainPath = os.path.join(pathtodata, 'train.zip')
-        validPath = os.path.join(pathtodata, 'validation.zip')
-        
-        if os.path.exists(trainPath):
-            print('Training zip file exists')
-        else:
-            print('No Training Data')
-            print('Now downloading training data')
-            wget.download(url='https://comp0053-emopain.s3.eu-west-2.amazonaws.com/movementData/train.zip',
-                        out=pathtodata)
-
-        if os.path.exists(validPath):
-            print('Validation zip file exists')
-        else:
-            print('Now downloading Validation data')
-            wget.download(url='https://comp0053-emopain.s3.eu-west-2.amazonaws.com/movementData/validation.zip',
-                        out=pathtodata)
-
-        # Unzip
-        assert os.path.exists(trainPath)
-        assert os.path.exists(validPath)
-
-        # Create
-        train_dest = os.path.join(pathtodata, 'train')
-        valid_dest = os.path.join(pathtodata, 'validation')
-        
-
-        if os.path.exists(train_dest):
-            print('Train data already exists')
-        else:
-            #os.mkdir(train_dest)
-            with ZipFile(trainPath, 'r') as zipObj:
-                zipObj.extractall(pathtodata)
-
-
-        if os.path.exists(valid_dest):
-            print('Valid data already exists')
-        else:
-            #os.mkdir(valid_dest)
-            with ZipFile(validPath, 'r') as zipObj:
-                zipObj.extractall(pathtodata)   
-
-    else:
-        # Create a data folder
-        print(f'Create a ->{data}<- folder ')
-        os.mkdir(pathtodata)
-        
-        print('\nNow downloading training data')
-        wget.download(url='https://comp0053-emopain.s3.eu-west-2.amazonaws.com/movementData/train.zip',
-                    out=pathtodata)
-        
-        print('\nNow downloading Validation data')
-        wget.download(url='https://comp0053-emopain.s3.eu-west-2.amazonaws.com/movementData/validation.zip',
-                    out=pathtodata)
-
-        trainPath = os.path.join(pathtodata, 'train.zip')
-        validPath = os.path.join(pathtodata, 'validation.zip')
-
-        print('Unzipping training data')
-        with ZipFile(trainPath, 'r') as zipObj:
-            zipObj.extractall(pathtodata)
-
-        print('Unzipping validation data')
-        with ZipFile(validPath, 'r') as zipObj:
-            zipObj.extractall(pathtodata)   
-'''
 
 from keras import backend as K
 
@@ -300,9 +253,83 @@ def f1_m(y_true, y_pred):
 if __name__ == "__main__":
     pass
     #Test code
-    '''
-    downloadandunzip()
+
     dl= DataReader()
-    a, b = dl.get_data()
-    print(len(a), len(b))
+    dl.more_more_processing()
+    
+    '''
+    def downloadandunzip(data='Movementdata'):
+        
+        pathtodata = os.path.join('data', data)
+
+        # Check if Data Folder exist
+        if os.path.exists(pathtodata):
+            print('Folder exists')
+            
+            # Check if train data exists
+            trainPath = os.path.join(pathtodata, 'train.zip')
+            validPath = os.path.join(pathtodata, 'validation.zip')
+            
+            if os.path.exists(trainPath):
+                print('Training zip file exists')
+            else:
+                print('No Training Data')
+                print('Now downloading training data')
+                wget.download(url='https://comp0053-emopain.s3.eu-west-2.amazonaws.com/movementData/train.zip',
+                            out=pathtodata)
+
+            if os.path.exists(validPath):
+                print('Validation zip file exists')
+            else:
+                print('Now downloading Validation data')
+                wget.download(url='https://comp0053-emopain.s3.eu-west-2.amazonaws.com/movementData/validation.zip',
+                            out=pathtodata)
+
+            # Unzip
+            assert os.path.exists(trainPath)
+            assert os.path.exists(validPath)
+
+            # Create
+            train_dest = os.path.join(pathtodata, 'train')
+            valid_dest = os.path.join(pathtodata, 'validation')
+            
+
+            if os.path.exists(train_dest):
+                print('Train data already exists')
+            else:
+                #os.mkdir(train_dest)
+                with ZipFile(trainPath, 'r') as zipObj:
+                    zipObj.extractall(pathtodata)
+
+
+            if os.path.exists(valid_dest):
+                print('Valid data already exists')
+            else:
+                #os.mkdir(valid_dest)
+                with ZipFile(validPath, 'r') as zipObj:
+                    zipObj.extractall(pathtodata)   
+
+        else:
+            # Create a data folder
+            print(f'Create a ->{data}<- folder ')
+            os.mkdir(pathtodata)
+            
+            print('\nNow downloading training data')
+            wget.download(url='https://comp0053-emopain.s3.eu-west-2.amazonaws.com/movementData/train.zip',
+                        out=pathtodata)
+            
+            print('\nNow downloading Validation data')
+            wget.download(url='https://comp0053-emopain.s3.eu-west-2.amazonaws.com/movementData/validation.zip',
+                        out=pathtodata)
+
+            trainPath = os.path.join(pathtodata, 'train.zip')
+            validPath = os.path.join(pathtodata, 'validation.zip')
+
+            print('Unzipping training data')
+            with ZipFile(trainPath, 'r') as zipObj:
+                zipObj.extractall(pathtodata)
+
+            print('Unzipping validation data')
+            with ZipFile(validPath, 'r') as zipObj:
+                zipObj.extractall(pathtodata)   
     '''
