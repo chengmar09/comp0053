@@ -61,6 +61,18 @@ class DataReader:
     def get_data(self):
         return self.train_data, self.valid_data
 
+    'Download weights'
+    def get_weights(self, data='Movementdata', name='stack_bilstm.ckpt'):
+        print('Downlading weights...')
+        if data == 'Movementdata':
+            wget.download(url='https://comp0053-emopain.s3.eu-west-2.amazonaws.com/movementData/'+name)
+            
+        elif name == 'Facialdata':
+            print('No facial yet')
+        
+        else:
+            print('Please specify a dataset')
+
     '''
     Return train data, train label, valid data, valid label
     '''
@@ -259,6 +271,7 @@ if __name__ == "__main__":
 
     dl= DataReader()
     dl.more_more_processing()
+    dl.get_weights()
     
     '''
     def downloadandunzip(data='Movementdata'):
