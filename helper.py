@@ -98,7 +98,7 @@ class DataReader:
 
         return (x_train, y_train), (x_valid, y_valid)
 
-    def more_processing(self):
+    def more_processing(self, v_stack=False):
         
         new_train_x = []
         new_train_y = []
@@ -112,34 +112,40 @@ class DataReader:
 
         for part_ix, part_iy in zip(t_x, t_y):
             #print(part_ix.shape, part_iy.shape)
-            joint_angles = part_ix[:, :13]
-            joint_energies = part_ix[:, 13:26]
 
-            #print(joint_angles.shape, joint_energies.shape)
-            joint_ang_ene = np.stack((joint_angles, joint_energies), axis=2)
+            if v_stack:
+                joint_angles = part_ix[:, :13]
+                joint_energies = part_ix[:, 13:26]
 
+                #print(joint_angles.shape, joint_energies.shape)
+                joint_ang_ene = np.stack((joint_angles, joint_energies), axis=2)
+            else:
+                joint_ang_ene = part_ix[:, :26]
             #print(joint_ang_ene.shape)
             new_train_x.append(joint_ang_ene)
 
 
         for part_ix, part_iy in zip(v_x, v_y):
             
-            joint_angles = part_ix[:, :13]
-            joint_energies = part_ix[:, 13:26]
-            joint_ang_ene = np.stack((joint_angles, joint_energies), axis=2)
+            if v_stack:
+                joint_angles = part_ix[:, :13]
+                joint_energies = part_ix[:, 13:26]
 
-            #print(joint_ang_ene.shape)
+                #print(joint_angles.shape, joint_energies.shape)
+                joint_ang_ene = np.stack((joint_angles, joint_energies), axis=2)
+            else:
+                joint_ang_ene = part_ix[:, :26]
             new_valid_x.append(joint_ang_ene)
 
         return (new_train_x, t_y), (new_valid_x, v_y)
 
-    def more_more_processing(self):
+    def more_more_processing(self, v_stack=False):
         new_train_x = []
         new_valid_x = []
 
         new_train_y = []
         new_valid_y = []
-        (t_x, t_y), (v_x, v_y) = self.more_processing()
+        (t_x, t_y), (v_x, v_y) = self.more_processing(v_stack)
 
         for part_ix, part_iy in zip(t_x, t_y):   #<- ensure that x and y have the same length
             for ix, iy in zip(part_ix, part_iy):
