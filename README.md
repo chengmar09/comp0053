@@ -16,7 +16,7 @@ Run `Data_Inspection_Classes.ipynb` to see the ratio of classes, 2-D features PC
 
 ### Feature Selection and Run the Baseline model.
 
-Run `.ipynb` for feature selection and results
+Run `Feature_Selection_and_Training_Baseline.ipynb` to see the feature selection and results on our baseline model
 
 
 ### Synthetic Data generation
