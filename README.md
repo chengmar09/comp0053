@@ -22,5 +22,7 @@ Run `Feature_Selection_and_Training_Baseline.ipynb` to see the feature selection
 ### Synthetic Data generation
 
 Run `Synthetic_Data_Sequential_Experiment.ipynb`
+
 Run `Synthetic_Data_Non_Sequential_Experiment_Overview.ipynb`
+
 Run `Synthetic_Data_Non_Sequential_Experiment_Training.ipynb`
